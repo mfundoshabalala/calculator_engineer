@@ -8,12 +8,11 @@ export class BasicCalculator {
     evaluate(expression) {
         var _a;
         const trimmedExpression = expression.trim();
-        // Check if the expression ends with an operator and trim it if necessary
         const endsWithOperator = /[+\-]$/.test(trimmedExpression);
         if (endsWithOperator) {
             const expressionWithoutOperator = trimmedExpression.slice(0, -1).trim();
             this.currentCalculation = expressionWithoutOperator || '0';
-            return null; // Do not evaluate the incomplete expression
+            return null;
         }
         try {
             this.result = this.evaluateExpression(trimmedExpression);
@@ -50,11 +49,9 @@ export class BasicCalculator {
     appendValue(value) {
         var _a;
         const lastChar = this.currentCalculation.trim().slice(-1);
-        // Prevent adding "+" if the current value is only "0" or ends with an operator
         if (value === '+' && (this.currentCalculation === '0' || lastChar === '+' || lastChar === '-')) {
             return;
         }
-        // Allow a leading "-" for negative numbers
         if (value === '-' && this.currentCalculation === '0') {
             this.currentCalculation = '-';
             return;
@@ -72,9 +69,7 @@ export class BasicCalculator {
                 this.currentCalculation = ((_a = this.result) === null || _a === void 0 ? void 0 : _a.toString()) || '0';
                 this.calculationCompleted = false;
             }
-            // Handling operators input
             if (value === '+' || value === '-') {
-                // Append operator only if the last character is not an operator
                 if (lastChar !== '+' && lastChar !== '-') {
                     this.currentCalculation += ` ${value} `;
                 }
@@ -161,9 +156,24 @@ export class CalculatorUI {
         this.updateDisplay();
     }
     updateDisplay() {
-        if (this.display && !this.showingFullExpression) {
-            this.display.innerText = this.calculator.getCurrentCalculation();
+        if (this.display) {
+            if (this.showingFullExpression) { // Display formatted expression when '=' has been pressed
+                this.display.innerHTML = this.formatDisplay(this.lastExpression);
+            }
+            else {
+                // Display normal expression while inputting
+                this.display.innerText = this.calculator.getCurrentCalculation();
+            }
         }
+    }
+    formatDisplay(expression) {
+        const parts = expression.split(' = ');
+        const expressionPart = parts[0];
+        const resultPart = parts.length === 2 ? parts[1] : '';
+        // Dynamically adjust font size based on the length of the expression
+        const expressionFontSize = '1.825rem'; // Decrease size for the expression
+        const resultFontSize = '2rem'; // Keep the default size for the result
+        return `<span style="font-size: ${expressionFontSize};">${expressionPart}</span> = <span style="font-size: ${resultFontSize}; color: black;">${resultPart}</span>`;
     }
     updateHistory() {
         if (this.historyDisplay) {

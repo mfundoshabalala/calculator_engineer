@@ -185,9 +185,25 @@ export class CalculatorUI {
 	}
 
 	public updateDisplay(): void {
-		if (this.display && !this.showingFullExpression) {
-			this.display.innerText = this.calculator.getCurrentCalculation();
-		}
+		if (this.display) {
+			if (this.showingFullExpression) {  // Display formatted expression when '=' has been pressed
+				this.display.innerHTML = this.formatDisplay(this.lastExpression);
+			} else {
+				// Display normal expression while inputting
+				this.display.innerText = this.calculator.getCurrentCalculation();
+			}
+    }
+	}
+
+	private formatDisplay(expression: string): string {
+		const parts = expression.split(' = ');
+		const expressionPart = parts[0];
+		const resultPart = parts.length === 2 ? parts[1] : '';
+
+		const expressionFontSize = '1.825rem';
+    const resultFontSize = '2rem';
+
+		return `<span style="font-size: ${expressionFontSize};">${expressionPart}</span> = <span style="font-size: ${resultFontSize}; color: black;">${resultPart}</span>`;
 	}
 
 	private updateHistory(): void {
