@@ -135,13 +135,22 @@ export class CalculationHistory {
         this.history = [];
     }
     addEntry(entry) {
-        this.history.push(entry);
+        const formattedEntry = this.formatHistoryEntry(entry);
+        this.history.push(formattedEntry);
     }
     getHistory() {
         return this.history;
     }
     clearHistory() {
         this.history = [];
+    }
+    formatHistoryEntry(entry) {
+        const parts = entry.split(' = ');
+        const expressionPart = parts[0];
+        const resultPart = parts.length === 2 ? parts[1] : '';
+        const expressionFontSize = '1rem';
+        const resultFontSize = '1.5rem';
+        return `<span style="font-size: ${expressionFontSize}; color: gray;">${expressionPart}</span> = <span style="font-size: ${resultFontSize}; color: black;">${resultPart}</span>`;
     }
 }
 export class CalculatorUI {
@@ -170,9 +179,8 @@ export class CalculatorUI {
         const parts = expression.split(' = ');
         const expressionPart = parts[0];
         const resultPart = parts.length === 2 ? parts[1] : '';
-        // Dynamically adjust font size based on the length of the expression
-        const expressionFontSize = '1.825rem'; // Decrease size for the expression
-        const resultFontSize = '2rem'; // Keep the default size for the result
+        const expressionFontSize = '1.825rem';
+        const resultFontSize = '2rem';
         return `<span style="font-size: ${expressionFontSize};">${expressionPart}</span> = <span style="font-size: ${resultFontSize}; color: black;">${resultPart}</span>`;
     }
     updateHistory() {

@@ -155,7 +155,8 @@ export class CalculationHistory {
 	private history: string[] = [];
 
 	addEntry(entry: string): void {
-		this.history.push(entry);
+		const formattedEntry = this.formatHistoryEntry(entry);
+		this.history.push(formattedEntry);
 	}
 
 	getHistory(): string[] {
@@ -164,6 +165,17 @@ export class CalculationHistory {
 
 	clearHistory(): void {
 		this.history = [];
+	}
+
+	private formatHistoryEntry(entry: string): string {
+		const parts = entry.split(' = ');
+		const expressionPart = parts[0];
+		const resultPart = parts.length === 2 ? parts[1] : '';
+
+		const expressionFontSize = '1rem';
+		const resultFontSize = '1.5rem';
+
+		return `<span style="font-size: ${expressionFontSize}; color: gray;">${expressionPart}</span> = <span style="font-size: ${resultFontSize}; color: black;">${resultPart}</span>`;
 	}
 }
 
