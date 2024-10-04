@@ -40,7 +40,6 @@ export class BasicCalculator implements Calculator {
 		}
 	}
 
-
 	clearAll(): void {
 		this.currentCalculation = '0';
 		this.result = null;
@@ -104,7 +103,6 @@ export class BasicCalculator implements Calculator {
 		}
 	}
 
-
 	getCurrentCalculation(): string {
 		return this.currentCalculation || '0';
 	}
@@ -155,8 +153,7 @@ export class CalculationHistory {
 	private history: string[] = [];
 
 	addEntry(entry: string): void {
-		const formattedEntry = this.formatHistoryEntry(entry);
-		this.history.push(formattedEntry);
+		this.history.push(entry);
 	}
 
 	getHistory(): string[] {
@@ -167,15 +164,22 @@ export class CalculationHistory {
 		this.history = [];
 	}
 
-	private formatHistoryEntry(entry: string): string {
+	getFormattedHistory(): string[] {
+		const maxFontSize = 1.825;
+		const minFontSize = 0.9;
+		const totalEntries = this.history.length;
+		return this.history.map((entry, index) => {
+			const scale = minFontSize + ((maxFontSize - minFontSize) * (index / (totalEntries - 1)));
+			return this.formatHistoryEntry(entry, scale);
+		});
+	}
+
+	private formatHistoryEntry(entry: string, fontSize: number): string {
 		const parts = entry.split(' = ');
 		const expressionPart = parts[0];
 		const resultPart = parts.length === 2 ? parts[1] : '';
 
-		const expressionFontSize = '1rem';
-		const resultFontSize = '1.5rem';
-
-		return `<span style="font-size: ${expressionFontSize}; color: gray;">${expressionPart}</span> = <span style="font-size: ${resultFontSize}; color: black;">${resultPart}</span>`;
+		return `<span style="font-size: ${fontSize}rem; color: gray;">${expressionPart}</span> = <span style="font-size: ${fontSize}rem; color: black;">${resultPart}</span>`;
 	}
 }
 
@@ -220,7 +224,8 @@ export class CalculatorUI {
 
 	private updateHistory(): void {
 		if (this.historyDisplay) {
-			this.historyDisplay.innerHTML = this.history.getHistory().join('<br>');
+			// this.historyDisplay.innerHTML = this.history.getHistory().join('<br>');
+			this.historyDisplay.innerHTML = this.history.getFormattedHistory().join('<br>');
 		}
 	}
 

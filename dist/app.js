@@ -135,8 +135,7 @@ export class CalculationHistory {
         this.history = [];
     }
     addEntry(entry) {
-        const formattedEntry = this.formatHistoryEntry(entry);
-        this.history.push(formattedEntry);
+        this.history.push(entry);
     }
     getHistory() {
         return this.history;
@@ -144,13 +143,20 @@ export class CalculationHistory {
     clearHistory() {
         this.history = [];
     }
-    formatHistoryEntry(entry) {
+    getFormattedHistory() {
+        const maxFontSize = 1.825;
+        const minFontSize = 0.9;
+        const totalEntries = this.history.length;
+        return this.history.map((entry, index) => {
+            const scale = minFontSize + ((maxFontSize - minFontSize) * (index / (totalEntries - 1)));
+            return this.formatHistoryEntry(entry, scale);
+        });
+    }
+    formatHistoryEntry(entry, fontSize) {
         const parts = entry.split(' = ');
         const expressionPart = parts[0];
         const resultPart = parts.length === 2 ? parts[1] : '';
-        const expressionFontSize = '1rem';
-        const resultFontSize = '1.5rem';
-        return `<span style="font-size: ${expressionFontSize}; color: gray;">${expressionPart}</span> = <span style="font-size: ${resultFontSize}; color: black;">${resultPart}</span>`;
+        return `<span style="font-size: ${fontSize}rem; color: gray;">${expressionPart}</span> = <span style="font-size: ${fontSize}rem; color: black;">${resultPart}</span>`;
     }
 }
 export class CalculatorUI {
@@ -185,7 +191,8 @@ export class CalculatorUI {
     }
     updateHistory() {
         if (this.historyDisplay) {
-            this.historyDisplay.innerHTML = this.history.getHistory().join('<br>');
+            // this.historyDisplay.innerHTML = this.history.getHistory().join('<br>');
+            this.historyDisplay.innerHTML = this.history.getFormattedHistory().join('<br>');
         }
     }
     isValidExpression(expression) {
