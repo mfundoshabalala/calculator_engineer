@@ -33,6 +33,7 @@ body {
 	margin-bottom: 10px;
 	padding-right: 10px;
 	flex: 1 0 auto;
+	text-align: right;
 }
 
 .display {
@@ -45,6 +46,8 @@ body {
 	min-height: 2.25rem;
 	overflow-y: hidden;
 	overflow-x: auto;
+	text-align: right;
+	direction: ltr;
 }
 
 .buttons {
