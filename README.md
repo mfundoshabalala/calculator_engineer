@@ -22,7 +22,35 @@ This is a simple web-based calculator built with **TypeScript** and **HTML**. It
 calculator/
 │
 ├── index.html           # Main HTML file with the calculator layout
-├── styles.css           # CSS file for styling the calculator
+├── style.css           # CSS file for styling the calculator
 ├── app.ts               # TypeScript code implementing calculator logic
 ├── README.md            # Documentation for the project
 └── tests/               # Unit tests for the calculator
+```
+
+## Installation
+
+### Prerequisites
+
+- **Node.js** (for compiling TypeScript and running the development server)
+- **TypeScript**
+
+### Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/basic-calculator.git
+   cd basic-calculator
+   ```
+2. Install dependencies
+  ```bash
+   npm install
+   ```
+3. Run the application in development
+   ```bash
+   npm run dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) on your preferred browser to view the application.
+
+
